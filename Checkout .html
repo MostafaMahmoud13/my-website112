@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 30px;
+    }
+
+    .checkout-box {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .info {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .info span {
+      font-weight: bold;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      text-align: center;
+      width: 100%;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #28a745;
+    }
+    form input, form textarea, form select {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+@media (max-width: 600px) {
+  body {
+    padding: 15px;
+  }
+
+  .box {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  form input,
+  form textarea,
+  form select {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .btn {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  .product-img {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+/* Animation الدخول */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Keyframes */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* زرار فيه حركة */
+button:hover, .btn:hover {
+  transform: scale(1.05);
+  transition: 0.3s ease;
+}
+
+/* Smooth transition لكل العناصر */
+form input,
+form textarea,
+form select,
+button {
+  transition: all 0.3s ease;
+}
+
+  </style>
+</head>
+<body>
+  <div class="checkout-box" class="fade-in">
+    <h2>🧾 Your Order Summary</h2>
+    <div class="info"><span>Color:</span> <span id="color"></span></div>
+    <div class="info"><span>Size:</span> <span id="size"></span></div>
+    <div class="info"><span>Quantity:</span> <span id="quantity"></span></div>
+    <div class="total">Total: $<span id="total"></span></div>
+
+    <a href="index.html" class="back-link">← Back to Product</a>
+  </div>
+  <hr style="margin: 30px 0;">
+
+  <h3>🧍‍♂️ Customer Info</h3>
+  <form action="https://formsubmit.co/mostafamms302@gmail.com" method="POST" id="orderForm" class="fade-in">
+    <input type="hidden" name="_next" value="thankyou.html">
+  
+    <!-- باقي عناصر الفورم زي الاسم، رقم التليفون، ... -->
+  
+    <label>Full Name</label><br>
+    <input type="text" name="name" required><br><br>
+  
+    <label>Email</label><br>
+    <input type="email" name="email" required><br><br>
+
+    <label>Phone Number</label><br>
+    <input type="tel" name="phone" required><br><br>
+  
+    <label>Country</label><br>
+    <select name="country" required>
+      <option value="">-- Select Country --</option>
+      <option>United States</option>
+      <option>Canada</option>
+      <option>Saudi Arabia</option>
+      <option>Egypt</option>
+      <option>UAE</option>
+      <option>UK</option>
+    </select><br><br>
+
+    <label for="">Choose Shipping Type</label><br>
+    <select required name="shipping">
+      <option value="" disabled selected>-- Select Type --</option>
+      <option value="Home">🏠 Home</option>
+      <option value="Office">🏢 Office</option>
+      <option value="Other">📍 Other</option>
+    </select><br><br>
+
+  
+    <label>The Address is Detailed</label><br>
+    <textarea name="notes" rows="3" minlength="10" required></textarea><br><br>
+  
+    <button type="submit" style="padding: 10px 20px; font-size: 16px; background: #007bff; color: white; border: none; border-radius: 5px;">Send Order</button>
+    
+
+  </form>
+  
+  <script>
+    const product = JSON.parse(localStorage.getItem("product"));
+
+    if (product) {
+      document.getElementById("color").textContent = product.color;
+      document.getElementById("size").textContent = product.size;
+      document.getElementById("quantity").textContent = product.quantity;
+      document.getElementById("total").textContent = (product.quantity * product.price).toFixed(2);
+    } else {
+      document.querySelector(".checkout-box").innerHTML = "<p>No product selected.</p>";
+    }
+
+  document.getElementById("orderForm").addEventListener("submit", function () {
+    const name = document.querySelector("[name='name']").value;
+    const phone = document.querySelector("[name='phone']").value;
+    const email = document.querySelector("[name='email']").value;
+    const country = document.querySelector("[name='country']").value;
+    const color = document.querySelector("[name='color']").value;
+    const size = document.querySelector("[name='size']").value;
+    const quantity = document.querySelector("[name='quantity']").value;
+    const notes = document.querySelector("[name='notes']").value;
+
+    const price = 19.99;
+    const total = (price * quantity).toFixed(2);
+
+    const order = {
+      name, phone, email, country, color, size, quantity, notes, total
+    };
+
+    localStorage.setItem("orderData", JSON.stringify(order));
+  });
+
+
+  </script>
+</body>
+</html>

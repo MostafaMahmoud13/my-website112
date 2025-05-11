@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thank You!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f8fb;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #28a745;
+      margin-bottom: 10px;
+    }
+
+    .details {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .details strong {
+      color: #333;
+    }
+
+    .product-img {
+      width: 200px;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 25px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>✅ Thank You!</h1>
+    <p>We've received your order. We'll contact you as soon as possible!</p>
+
+    <div class="details" id="orderDetails">
+      <!-- سيتم تعبئة البيانات هنا -->
+    </div>
+
+    <a href="index.html" class="btn">← Back to Home</a>
+  </div>
+
+  <script>
+    const data = JSON.parse(localStorage.getItem("orderData"));
+    if (data) {
+      const imgMap = {
+        "Black": "https://via.placeholder.com/200x200/000000/ffffff?text=Black",
+        "White": "https://via.placeholder.com/200x200/ffffff/000000?text=White",
+        "Red": "https://via.placeholder.com/200x200/ff0000/ffffff?text=Red",
+        "Blue": "https://via.placeholder.com/200x200/0000ff/ffffff?text=Blue"
+      };
+
+      const orderBox = `
+        <img src="${imgMap[data.color] || 'https://via.placeholder.com/200'}" class="product-img" alt="${data.color}">
+        <p><strong>Name:</strong> ${data.name}</p>
+        <p><strong>Phone:</strong> ${data.phone}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Country:</strong> ${data.country}</p>
+        <p><strong>Color:</strong> ${data.color}</p>
+        <p><strong>Size:</strong> ${data.size}</p>
+        <p><strong>Quantity:</strong> ${data.quantity}</p>
+        <p><strong>Total:</strong> $${data.total}</p>
+        ${data.notes ? `<p><strong>Notes:</strong> ${data.notes}</p>` : ''}
+      `;
+      document.getElementById("orderDetails").innerHTML = orderBox;
+    } else {
+      document.getElementById("orderDetails").innerHTML = "<p>No order found.</p>";
+    }
+  </script>
+</body>
+</html>
